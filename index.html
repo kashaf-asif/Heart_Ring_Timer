@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>19 Days Left – Interactive Heart Ring</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: #fff0f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Georgia', serif;
+      position: relative;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .ring {
+      width: 180px;
+      height: 180px;
+      border: 8px solid gold;
+      border-radius: 50%;
+      animation: spin 10s linear infinite;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+      margin: auto;
+      position: relative;
+      background: radial-gradient(circle at center, #ffe4e1, #fff0f5);
+    }
+
+    .heart {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      color: #e91e63;
+      animation: pulse 2s infinite;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #8b1e3f;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .container.clicked .message {
+      opacity: 1;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.2); }
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: gold;
+      border-radius: 50%;
+      animation: sparkle 2s infinite ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.5); }
+    }
+
+    .firework {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: red;
+      border-radius: 50%;
+      animation: explode 0.8s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes explode {
+      to {
+        transform: translate(var(--x), var(--y)) scale(0.5);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" onclick="showMessage(event)">
+    <div class="ring">
+      <div class="heart">❤️</div>
+    </div>
+    <div class="message">"19 Days Until Two Hearts Become One"💍</div>
+  </div>
+
+  <!-- Sparkles -->
+  <script>
+    for (let i = 0; i < 30; i++) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.top = Math.random() * 100 + 'vh';
+      sparkle.style.left = Math.random() * 100 + 'vw';
+      sparkle.style.animationDelay = Math.random() * 3 + 's';
+      document.body.appendChild(sparkle);
+    }
+
+    function showMessage(e) {
+      const container = e.currentTarget;
+      container.classList.add("clicked");
+
+      // Create fire-pops
+      for (let i = 0; i < 15; i++) {
+        const fire = document.createElement('div');
+        fire.className = 'firework';
+        fire.style.left = e.clientX + 'px';
+        fire.style.top = e.clientY + 'px';
+
+        // Random direction
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 60 + Math.random() * 30;
+        fire.style.setProperty('--x', Math.cos(angle) * distance + 'px');
+        fire.style.setProperty('--y', Math.sin(angle) * distance + 'px');
+
+        document.body.appendChild(fire);
+        setTimeout(() => fire.remove(), 800);
+      }
+    }
+  </script>
+</body>
+</html>
